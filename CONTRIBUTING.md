@@ -30,9 +30,8 @@ uv build && uv run twine check dist/*
   HTTP, pricing and replay logic belong in the consumers.
 - **Dependencies:** pydantic only. A new runtime dependency needs a strong reason and a
   discussion first.
-- **Every model change needs:** tests, the regenerated `schemas/`, a corpus case in
-  `corpus/valid/` (and `corpus/invalid/` where relevant), and a CHANGELOG entry classified as
-  compatible or breaking.
+- **Every model change needs:** tests, the regenerated schemas (`src/agentplane_primitives/schemas/`), and a CHANGELOG
+  entry classified as compatible or breaking.
 - **Compatibility:** follow [docs/versioning.md](docs/versioning.md). Additive changes only
   within a major version. A new enum member is a schema change.
 - **Public API is typed.** `mypy --strict` must pass.

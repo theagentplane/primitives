@@ -24,9 +24,10 @@ Three repositories depend on this package, so compatibility is a contract and no
 
 ## Safety nets
 
-- **Golden corpus** (`corpus/`): known-good (`valid/`) and known-bad (`invalid/`) example
-  payloads. Every consumer repository validates against it in CI.
-- **Committed JSON Schema** (`schemas/`): generated from the models. CI fails if the committed
+- **One source of truth:** consumers import these models instead of writing their own parsers,
+  so they validate against the same code. (A shared set of example payloads for consumers that
+  parse by hand can be added later if one appears.)
+- **Committed JSON Schema** (`src/agentplane_primitives/schemas/`): generated from the models. CI fails if the committed
   files differ from what the models generate.
 
 ## Changelog

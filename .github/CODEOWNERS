@@ -2,7 +2,6 @@
 # explicitly so they stay protected if the default owner list ever broadens.
 *                       @susheem-k @tishachawla-jg
 /src/                   @susheem-k @tishachawla-jg
-/schemas/               @susheem-k @tishachawla-jg
-/corpus/                @susheem-k @tishachawla-jg
+/src/agentplane_primitives/schemas/   @susheem-k @tishachawla-jg
 /docs/versioning.md     @susheem-k @tishachawla-jg
 /.github/               @susheem-k @tishachawla-jg

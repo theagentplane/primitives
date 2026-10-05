@@ -17,7 +17,6 @@
 ## Checklist
 
 - [ ] Tests added or updated
-- [ ] `schemas/` regenerated (if a model changed)
-- [ ] Corpus case added in `corpus/valid/` (and `corpus/invalid/` where relevant)
+- [ ] `src/agentplane_primitives/schemas/` regenerated (if a model changed)
 - [ ] CHANGELOG entry added and classified as compatible or breaking
 - [ ] `ruff`, `mypy` and `pytest` pass locally
