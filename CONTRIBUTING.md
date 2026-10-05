@@ -52,7 +52,9 @@ depend on this package.
 - **Keeping it as one change is allowed** when it cannot be split sensibly, such as initial
   boilerplate, a mechanical change, or generated code. Say why in the pull request description.
 
-This is a prompt to plan, not a hard limit.
+This is a prompt to plan, not a hard limit. A workflow (`.github/workflows/pr-size.yml`) enforces
+nothing: when a pull request is over 400 lines it adds the `size/large` label and one comment, and
+removes them again if the pull request shrinks. It never fails and is not a required check.
 
 ## Proposing a schema change
 
