@@ -1,0 +1,23 @@
+name: Bug report
+description: Something validates, serializes or parses incorrectly.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Include the payload or input that triggers it, and what you expected.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python and pydantic versions
+      placeholder: "3.12 / pydantic 2.9"

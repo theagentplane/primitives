@@ -1,0 +1,115 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentplane-primitives"
+dynamic = ["version"]
+description = "Shared, versioned domain primitives (Trace, Span, Envelope) and API models for the AgentPlane products."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Tisha Chawla" },
+    { name = "Susheem Koul" },
+]
+keywords = ["agents", "llm", "observability", "schema", "tracing", "pydantic"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+# The only runtime dependency. This package performs no I/O and has no business logic.
+dependencies = [
+    "pydantic>=2.6,<3",
+]
+
+[project.urls]
+Homepage = "https://github.com/theagentplane/primitives"
+Repository = "https://github.com/theagentplane/primitives"
+Issues = "https://github.com/theagentplane/primitives/issues"
+Changelog = "https://github.com/theagentplane/primitives/blob/main/CHANGELOG.md"
+
+# PEP 735 dependency groups: development-only, never part of the published metadata.
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "ruff>=0.8",
+    "mypy>=1.13",
+    "build>=1.2",
+    "twine>=5",
+    "pre-commit>=4",
+]
+
+[tool.hatch.version]
+path = "src/agentplane_primitives/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentplane_primitives"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/agentplane_primitives",
+    "schemas",
+    "corpus",
+    "docs",
+    "tests",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # bugbear
+    "UP",  # pyupgrade
+    "SIM", # simplify
+    "C4",  # comprehensions
+    "PT",  # pytest style
+    "RUF", # ruff-specific
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["agentplane_primitives"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+plugins = ["pydantic.mypy"]
+files = ["src", "tests"]
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = ["-ra", "--strict-markers", "--strict-config"]
+
+[tool.coverage.run]
+source = ["agentplane_primitives"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true

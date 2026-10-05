@@ -1,0 +1,8 @@
+# Every change needs review from a code owner. Schema-bearing paths are listed
+# explicitly so they stay protected if the default owner list ever broadens.
+*                       @susheem-k
+/src/                   @susheem-k
+/schemas/               @susheem-k
+/corpus/                @susheem-k
+/docs/versioning.md     @susheem-k
+/.github/               @susheem-k

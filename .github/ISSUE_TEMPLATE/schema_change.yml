@@ -1,0 +1,33 @@
+name: Schema change proposal
+description: Propose a new or changed entity, field, enum value or id format.
+labels: ["schema"]
+body:
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What should change, and why?
+    validations:
+      required: true
+  - type: dropdown
+    id: compat
+    attributes:
+      label: Compatibility
+      options:
+        - Compatible (additive only)
+        - Breaking (needs a new major version)
+    validations:
+      required: true
+  - type: textarea
+    id: consumers
+    attributes:
+      label: Affected consumers and migration
+      description: Which of Chronicle, the control plane and TokenOps are affected, and what must each do?
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Example payload
+      description: A before and after JSON example, if applicable.
+      render: json
