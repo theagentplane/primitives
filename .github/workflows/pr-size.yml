@@ -9,7 +9,7 @@ name: PR size
 # pull request's code) and talks to the GitHub API only. Do not add a checkout of the PR head or
 # run anything from it.
 on:
-  pull_request_target:
+  pull_request_target: # zizmor: ignore[dangerous-triggers] base-branch checkout and API only; see the note above
     types: [opened, synchronize, reopened, ready_for_review]
 
 permissions: {}
@@ -24,9 +24,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
-      contents: read
-      pull-requests: write
-      issues: write
+      contents: read # check out the base branch
+      pull-requests: write # add and remove the label
+      issues: write # post and update the comment (pull requests are issues)
     steps:
       - name: Check out the base branch (not the pull request)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
