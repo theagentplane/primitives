@@ -19,6 +19,17 @@ Decisions that shape this repository are recorded as ADRs in [`docs/adr/`](docs/
   were weighed, ask. Leave the status as *Proposed*: the people named as deciders accept it.
 - **Never rewrite an accepted ADR.** Supersede it with a new one.
 
+## Change size
+
+- **Estimate before writing code:** lines added plus removed, not counting generated files,
+  lockfiles or pure moves and renames.
+- **If the estimate is above 400 lines, stop and plan.** Propose to the user a short plan that
+  splits the work into logical components (each reviewable on its own, passing CI, in order), and
+  wait for agreement before implementing. Open one pull request per component.
+- **Keep one change as one thing.** Do not mix unrelated changes into a pull request.
+- Staying above 400 lines is acceptable for boilerplate, mechanical changes or generated code,
+  but say why in the pull request description.
+
 ## Related repositories
 
 [chronicle](https://github.com/theagentplane/chronicle) (edge SDK: record, save, replay) ·

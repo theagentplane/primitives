@@ -36,6 +36,24 @@ uv build && uv run twine check dist/*
   within a major version. A new enum member is a schema change.
 - **Public API is typed.** `mypy --strict` must pass.
 
+## Change size
+
+Small changes are easier to review, easier to revert and safer for the three repositories that
+depend on this package.
+
+- **Estimate before you start.** Count lines added plus lines removed. Do not count generated
+  files (such as the schemas), lockfiles, or pure file moves and renames.
+- **If the estimate is above 400 lines, consider splitting it.** Write a short plan: a list of
+  logical components, each one reviewable on its own, passing CI, and ordered so that each builds
+  on the one before. Put the plan in the issue or the pull request description, then open one pull
+  request per component.
+- **Split by logical component, not by size.** For example: the models, then schema generation,
+  then the drift check. Not "the first half of the file".
+- **Keeping it as one change is allowed** when it cannot be split sensibly, such as initial
+  boilerplate, a mechanical change, or generated code. Say why in the pull request description.
+
+This is a prompt to plan, not a hard limit.
+
 ## Proposing a schema change
 
 Open an issue using the *Schema change proposal* template before writing code. Say which
