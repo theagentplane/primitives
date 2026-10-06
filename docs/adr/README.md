@@ -41,6 +41,7 @@ Do not write one for routine changes: a bug fix, a rename, a small refactor.
 | ADR | Title | Status |
 |---|---|---|
 | [0001](0001-record-architecture-decisions.md) | Record architecture decisions | Accepted |
+| [0003](0003-api-models-live-in-control-plane.md) | Keep HTTP request and response wrappers out of primitives | Proposed |
 
 Related repositories: [chronicle](https://github.com/theagentplane/chronicle), [primitives](https://github.com/theagentplane/primitives),
 [control-plane](https://github.com/theagentplane/control-plane), [tokenops](https://github.com/theagentplane/tokenops).

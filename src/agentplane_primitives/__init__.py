@@ -1,7 +1,7 @@
 """AgentPlane primitives: shared, versioned domain objects.
 
 Used by Chronicle, the control plane and TokenOps. This package holds data models only:
-no I/O and no business logic. The entities (Trace, Span, Envelope) and API models are
+no I/O and no business logic. The entities (Trace, Span, Envelope) are
 added in later releases; see ``docs/design.md``.
 """
 

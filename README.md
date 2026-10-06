@@ -73,7 +73,7 @@ python -c "import agentplane_primitives as p; print(p.__version__)"
 
 ```mermaid
 flowchart LR
-    P["primitives<br/>Trace · Span · Envelope · API models"]
+    P["primitives<br/>Trace · Span · Envelope"]
     C["Chronicle<br/>edge SDK: record, save, replay"]
     CP["Control plane<br/>storage, query, visualization"]
     T["TokenOps<br/>governance"]
@@ -94,9 +94,10 @@ storage layout and maps from these models.
 | In scope | Out of scope |
 |---|---|
 | `Trace`, `Span`, `Envelope` and their `llm` and `tool` payload variants | Storage, HTTP clients or servers |
-| API request and response models | Business logic (pricing, policy, replay matching) |
-| The `traceparent` carrier, id generation and validation | Visualization or export (the control plane maps to OpenTelemetry) |
-| Enumerations and well-known metadata keys | Anything that performs I/O |
+| The `traceparent` carrier, id generation and validation | Business logic (pricing, policy, replay matching) |
+| Enumerations and well-known metadata keys | Visualization or export (the control plane maps to OpenTelemetry) |
+| Committed JSON Schema for every model | HTTP request and response wrappers (the control plane owns them, [ADR 0003](docs/adr/0003-api-models-live-in-control-plane.md)) |
+| | Anything that performs I/O |
 
 ## 🔖 Versioning
 
@@ -125,7 +126,7 @@ uv build                                  # sdist and wheel
 
 1. ✅ Repository scaffold
 2. `Trace`, `Span`, `Envelope`, the `llm` and `tool` payload variants, enums, ids
-3. The `traceparent` carrier and the API request and response models
+3. The `traceparent` carrier
 4. Committed JSON Schema and the CI drift check
 
 ## Reference
