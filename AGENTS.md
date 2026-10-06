@@ -1,6 +1,6 @@
 # Agent instructions
 
-Shared, versioned domain models (Trace, Span, Envelope) and API models used by Chronicle, the control plane and TokenOps. This package contains data and validation only: no I/O and no business logic.
+Shared, versioned domain models (Trace, Span, Envelope) used by Chronicle, the control plane and TokenOps. This package contains data and validation only: no I/O and no business logic.
 
 This file is read by AI coding agents (Claude Code, Codex, Cursor, Copilot and others). Humans
 may find it useful too.

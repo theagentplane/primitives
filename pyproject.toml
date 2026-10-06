@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "agentplane-primitives"
 dynamic = ["version"]
-description = "Shared, versioned domain primitives (Trace, Span, Envelope) and API models for the AgentPlane products."
+description = "Shared, versioned domain primitives (Trace, Span, Envelope) for the AgentPlane products."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
