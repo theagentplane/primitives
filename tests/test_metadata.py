@@ -3,7 +3,7 @@
 import pytest
 from pydantic import TypeAdapter, ValidationError
 
-from agentplane_primitives.models.metadata import Metadata, TraceMetadata, is_reserved_key
+from agentplane_primitives.models.metadata import Metadata, TraceMetadata
 
 
 def test_metadata_keys_are_lowercase_dot_separated() -> None:
@@ -20,9 +20,3 @@ def test_trace_labels_must_be_strings() -> None:
     assert adapter.validate_python({"session_id": "s1"}) == {"session_id": "s1"}
     with pytest.raises(ValidationError):
         adapter.validate_python({"session_id": 1})
-
-
-def test_reserved_prefix() -> None:
-    assert is_reserved_key("chronicle.sdk_version")
-    assert not is_reserved_key("chroniclex.a")
-    assert not is_reserved_key("client.library")
