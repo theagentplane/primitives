@@ -21,16 +21,14 @@ while the endpoints, status codes and the rest of the HTTP layer are its own con
 
 ### Option A: API models stay in primitives (the design as written)
 
-- Good: one place for everything on the wire; Chronicle and the control plane share the same
-  request and result shapes.
-- Bad: this package takes on the shape of one service's HTTP API, which changes with that
-  service rather than with the data.
+- Good: matches the design as written (sections 1.1, 2.8 and 10.1).
+- Bad: it treats HTTP request and response wrappers as part of the data model, when the
+  maintainers consider Trace, Span and Envelope to be data and not request objects.
 
 ### Option B: the control plane owns all API models, and Chronicle depends on primitives through it
 
 - Good: nothing HTTP-specific in primitives.
-- Bad: Chronicle, an SDK that runs inside other people's services, would install the control
-  plane's dependencies and be tied to its releases. This conflicts with decision 9.
+- Bad: Chronicle would depend on server code, which conflicts with decision 9 of the design.
 
 ### Option C: primitives holds only the entities; the control plane owns the HTTP wrappers
 
@@ -39,8 +37,7 @@ batch of envelopes is a list of `Envelope`). Wrappers that exist only because of
 (the write result and the error body) belong to the control plane. Chronicle imports primitives
 directly.
 
-- Good: primitives stays about the data; Chronicle keeps one small dependency; entities have a
-  single definition.
+- Good: primitives stays about the data, and Chronicle depends on primitives directly.
 - Bad: Chronicle must read the write result and error body without a shared model, so it needs a
   few lines of its own code and a contract test against the control plane.
 
@@ -51,8 +48,7 @@ We will take Option C. Primitives defines the entities, ids, enums, metadata rul
 
 ## Consequences
 
-- **Good:** a smaller package with a stable surface; the control plane can change its API without
-  a primitives release.
+- **Good:** a smaller package: primitives holds data only.
 - **Bad or risky:** the result and error shapes are defined in one repository and read in
   another, so drift is possible until a contract test exists. If those shapes grow, moving them
   into primitives later is an additive change.

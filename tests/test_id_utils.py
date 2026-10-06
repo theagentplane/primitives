@@ -1,5 +1,6 @@
 """Tests for the id generators."""
 
+import secrets
 from collections.abc import Callable
 
 import pytest
@@ -25,3 +26,9 @@ def test_generated_ids_are_valid_and_random(
     for value in ids:
         assert len(value) == length
         assert adapter.validate_python(value) == value
+
+
+def test_all_zero_draw_is_redrawn(monkeypatch: pytest.MonkeyPatch) -> None:
+    draws = iter(["0" * 16, "0000000000000007"])
+    monkeypatch.setattr(secrets, "token_hex", lambda _nbytes: next(draws))
+    assert new_span_id() == "0000000000000007"

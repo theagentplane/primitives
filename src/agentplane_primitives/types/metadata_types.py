@@ -1,6 +1,7 @@
 """Metadata conventions for all entities (design sections 2.6 and 2.9).
 
-- Keys are lowercase and dot-separated, for example ``client.library``.
+- Keys are lowercase and dot-separated, for example ``client.library``. Each segment is made of
+  lowercase letters, digits and underscores; hyphens are not allowed.
 - The ``chronicle.`` prefix is reserved for keys Chronicle itself sets. The models accept those
   keys (they carry what Chronicle wrote); keeping user code off the prefix is the SDK's job, and
   ``agentplane_primitives.utils.metadata_utils.is_reserved_key`` is there for it.
@@ -21,7 +22,7 @@ USER_ID = "user_id"
 
 MetadataKey = Annotated[
     str,
-    StringConstraints(strict=True, pattern=r"^[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)*$"),
+    StringConstraints(strict=True, pattern=r"^[a-z0-9_]+(\.[a-z0-9_]+)*$"),
 ]
 
 TraceMetadata = dict[MetadataKey, str]

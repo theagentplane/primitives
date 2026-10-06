@@ -7,8 +7,7 @@ Ids are random, never all zero, and come from the operating system's random sour
 
 import secrets
 
-_TRACE_ID_LENGTH = 32
-_SHORT_ID_LENGTH = 16
+from agentplane_primitives.types.id_types import SHORT_ID_LENGTH, TRACE_ID_LENGTH
 
 
 def _random_hex(length: int) -> str:
@@ -20,14 +19,14 @@ def _random_hex(length: int) -> str:
 
 def new_trace_id() -> str:
     """Return a new random ``trace_id``: 32 lowercase hex characters."""
-    return _random_hex(_TRACE_ID_LENGTH)
+    return _random_hex(TRACE_ID_LENGTH)
 
 
 def new_span_id() -> str:
     """Return a new random ``span_id``: 16 lowercase hex characters."""
-    return _random_hex(_SHORT_ID_LENGTH)
+    return _random_hex(SHORT_ID_LENGTH)
 
 
 def new_envelope_id() -> str:
     """Return a new random ``envelope_id``: 16 lowercase hex characters."""
-    return _random_hex(_SHORT_ID_LENGTH)
+    return _random_hex(SHORT_ID_LENGTH)

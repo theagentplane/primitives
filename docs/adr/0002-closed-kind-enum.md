@@ -21,17 +21,15 @@ function, a tool; delegating work to another agent is an outbound call, which is
 
 What 0.5.0 does today.
 
-- Good: no schema change needed to add a kind; users can label boundaries freely.
-- Bad: input and output shapes cannot be validated per kind, and consumers must cope with values
-  they have never seen.
+- Good: unchanged from 0.5.0.
+- Bad: it allows values such as `router` and `custom`, which the design retires (section 2.3).
 
 ### Option B: closed enum defined in this package
 
 `kind` is `llm` or `tool`. Any other value is rejected at validation.
 
-- Good: input and output variants can be chosen and validated by `kind`; every consumer sees
-  the same two values.
-- Bad: adding a kind is a schema change that needs a release of this package.
+- Good: a value outside the enum is rejected at validation (section 2.3).
+- Bad: adding a kind is a schema change made in this package (section 2.8).
 
 ## Decision
 
@@ -41,8 +39,7 @@ reject every other value, including custom and unregistered kinds. `router` and 
 
 ## Consequences
 
-- **Good:** one definition shared by Chronicle, the control plane and TokenOps; payloads can be
-  checked against the kind they claim.
+- **Good:** one definition of `kind`, shared by Chronicle, the control plane and TokenOps.
 - **Bad or risky:** a new kind is additive for the writer, but a reader on an older minor rejects
   it, so consumers must upgrade before emitters (`docs/versioning.md`). Users cannot invent their
   own kinds.

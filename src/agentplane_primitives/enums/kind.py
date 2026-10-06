@@ -4,10 +4,10 @@ Closed enum: there are no custom or unregistered kinds, and any other value is r
 validation. A new kind is a schema change (see ``docs/versioning.md`` and ADR 0002).
 """
 
-from enum import Enum
+from agentplane_primitives.enums.base_enum import BaseEnum
 
 
-class Kind(str, Enum):
+class Kind(BaseEnum):
     """The kind of boundary crossing an envelope records. It selects the input and output shape."""
 
     LLM = "llm"

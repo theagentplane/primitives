@@ -3,10 +3,10 @@
 Closed enum. A record is mutable while open and immutable once closed.
 """
 
-from enum import Enum
+from agentplane_primitives.enums.base_enum import BaseEnum
 
 
-class State(str, Enum):
+class State(BaseEnum):
     """Lifecycle state shared by Trace, Span and Envelope."""
 
     OPEN = "open"

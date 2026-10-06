@@ -10,7 +10,8 @@ def test_metadata_keys_are_lowercase_dot_separated() -> None:
     adapter = TypeAdapter(Metadata)
     assert adapter.validate_python({"client.library": "openai", "a": {"x": [1, None]}})
     assert adapter.validate_python({"chronicle.sdk_version": "1"})  # accepted: Chronicle writes it
-    for bad in ["Client.library", "client..library", ".client", "client.", "1abc", "a-b", ""]:
+    assert adapter.validate_python({"http.2xx": 1, "client.v2": 1})
+    for bad in ["Client.library", "client..library", ".client", "client.", "a-b", "a b", ""]:
         with pytest.raises(ValidationError):
             adapter.validate_python({bad: 1})
 

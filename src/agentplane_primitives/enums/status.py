@@ -4,10 +4,10 @@ Closed enum. A Trace has no status of its own. There is no ``aborted`` value: a 
 is a ``failure`` whose ``output.error.type`` is ``AbortCall``.
 """
 
-from enum import Enum
+from agentplane_primitives.enums.base_enum import BaseEnum
 
 
-class Status(str, Enum):
+class Status(BaseEnum):
     """High-level result of a Span or Envelope."""
 
     SUCCESS = "success"

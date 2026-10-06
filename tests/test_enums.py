@@ -3,7 +3,7 @@
 import pytest
 from pydantic import TypeAdapter, ValidationError
 
-from agentplane_primitives.enums import Kind, LinkType, State, Status
+from agentplane_primitives.enums import BaseEnum, Kind, LinkType, State, Status
 
 
 def test_enum_values_match_the_design() -> None:
@@ -17,3 +17,9 @@ def test_enum_values_match_the_design() -> None:
 def test_kind_is_closed(value: str) -> None:
     with pytest.raises(ValidationError):
         TypeAdapter(Kind).validate_python(value)
+
+
+@pytest.mark.parametrize("member", [*Kind, *State, *Status, *LinkType])
+def test_text_form_is_the_value(member: BaseEnum) -> None:
+    assert str(member) == member.value
+    assert f"{member}" == member.value

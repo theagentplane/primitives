@@ -12,7 +12,9 @@ class PrimitiveModel(BaseModel):
     - Unknown fields are ignored on read. This only matters when writer and reader run
       different versions (for example during a rolling upgrade); the control plane keeps the
       full original payload, so nothing is lost.
-    - Assigning a bad value to a field is validated, not silently accepted.
+    - Assigning a bad value to a field is validated, not silently accepted. Changing a
+      container in place (for example ``model.metadata[key] = value``) is not checked: Python
+      gives pydantic no hook for it, so such rules hold when the model is built or assigned.
     """
 
     model_config = ConfigDict(extra="ignore", validate_assignment=True)
