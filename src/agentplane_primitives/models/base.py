@@ -1,4 +1,7 @@
-"""The base class every model in this package inherits from."""
+"""``PrimitiveModel``: the base class every model in this package inherits from.
+
+It holds the settings all models share, so they are decided once (design section 2.8).
+"""
 
 from pydantic import BaseModel, ConfigDict
 
