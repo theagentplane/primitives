@@ -2,7 +2,7 @@
 
 Ids are lowercase hexadecimal and never all zero (W3C Trace Context treats an all-zero id as
 invalid). ``trace_id`` is 128 bits (32 characters); ``span_id`` and ``envelope_id`` are 64 bits
-(16 characters). Making new ids is in ``agentplane_primitives.utils.ids``.
+(16 characters). Making new ids is in ``agentplane_primitives.utils.id_utils``.
 """
 
 from typing import Annotated

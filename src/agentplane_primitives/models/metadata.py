@@ -3,7 +3,7 @@
 - Keys are lowercase and dot-separated, for example ``client.library``.
 - The ``chronicle.`` prefix is reserved for keys Chronicle itself sets. The models accept those
   keys (they carry what Chronicle wrote); keeping user code off the prefix is the SDK's job, and
-  ``agentplane_primitives.utils.metadata.is_reserved_key`` is there for it.
+  ``agentplane_primitives.utils.metadata_utils.is_reserved_key`` is there for it.
 - Trace labels have string values, because they are indexed and filtered on. Span and Envelope
   metadata values may be any JSON value.
 """
