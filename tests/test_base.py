@@ -3,7 +3,8 @@
 import pytest
 from pydantic import ValidationError
 
-from agentplane_primitives.models import PrimitiveModel, SpanId
+from agentplane_primitives.models import PrimitiveModel
+from agentplane_primitives.types import SpanId
 
 
 def test_unknown_fields_are_ignored_and_assignment_is_validated() -> None:

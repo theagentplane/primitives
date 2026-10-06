@@ -3,7 +3,7 @@
 import pytest
 from pydantic import TypeAdapter, ValidationError
 
-from agentplane_primitives.models.metadata import Metadata, TraceMetadata
+from agentplane_primitives.types.metadata_types import Metadata, TraceMetadata
 
 
 def test_metadata_keys_are_lowercase_dot_separated() -> None:

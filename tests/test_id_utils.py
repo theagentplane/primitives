@@ -5,7 +5,7 @@ from collections.abc import Callable
 import pytest
 from pydantic import TypeAdapter
 
-from agentplane_primitives.models import EnvelopeId, SpanId, TraceId
+from agentplane_primitives.types import EnvelopeId, SpanId, TraceId
 from agentplane_primitives.utils import new_envelope_id, new_span_id, new_trace_id
 
 

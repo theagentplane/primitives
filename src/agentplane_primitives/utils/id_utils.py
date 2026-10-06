@@ -2,7 +2,7 @@
 
 Ids are random, never all zero, and come from the operating system's random source
 (``secrets``), not ``random``. The matching types that validate them are in
-``agentplane_primitives.models.ids``.
+``agentplane_primitives.types.id_types``.
 """
 
 import secrets

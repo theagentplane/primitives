@@ -3,7 +3,7 @@
 import pytest
 from pydantic import TypeAdapter, ValidationError
 
-from agentplane_primitives.models.ids import EnvelopeId, SpanId, TraceId
+from agentplane_primitives.types.id_types import EnvelopeId, SpanId, TraceId
 
 
 @pytest.mark.parametrize(
