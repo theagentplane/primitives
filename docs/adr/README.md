@@ -41,6 +41,7 @@ Do not write one for routine changes: a bug fix, a rename, a small refactor.
 | ADR | Title | Status |
 |---|---|---|
 | [0001](0001-record-architecture-decisions.md) | Record architecture decisions | Accepted |
+| [0002](0002-closed-kind-enum.md) | Define envelope `kind` as a closed enum with two members | Proposed |
 
 Related repositories: [chronicle](https://github.com/theagentplane/chronicle), [primitives](https://github.com/theagentplane/primitives),
 [control-plane](https://github.com/theagentplane/control-plane), [tokenops](https://github.com/theagentplane/tokenops).
