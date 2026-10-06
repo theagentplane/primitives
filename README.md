@@ -136,7 +136,8 @@ uv build                                  # sdist and wheel
 
 ```
 src/agentplane_primitives/   # installable package (typed; version in _version.py)
-├── core/                    # shared building blocks: base model, enums, ids, metadata rules
+├── base.py                  # PrimitiveModel: settings every model inherits
+├── fields/                  # field types: closed enums, id types, metadata rules
 └── schemas/                 # generated JSON Schema, committed and drift-checked in CI
                              # (entities/ and propagation/ arrive with the Trace, Span, Envelope
                              # and traceparent PRs)

@@ -1,13 +1,13 @@
-"""Tests for enums, ids, the base model and metadata conventions."""
+"""Tests for the field types (enums, ids, metadata) and the base model."""
 
 from collections.abc import Callable
 
 import pytest
 from pydantic import TypeAdapter, ValidationError
 
-from agentplane_primitives.core.base import PrimitiveModel
-from agentplane_primitives.core.enums import Kind, LinkType, State, Status
-from agentplane_primitives.core.ids import (
+from agentplane_primitives.base import PrimitiveModel
+from agentplane_primitives.fields.enums import Kind, LinkType, State, Status
+from agentplane_primitives.fields.ids import (
     EnvelopeId,
     SpanId,
     TraceId,
@@ -15,7 +15,7 @@ from agentplane_primitives.core.ids import (
     new_span_id,
     new_trace_id,
 )
-from agentplane_primitives.core.metadata import Metadata, TraceMetadata, is_reserved_key
+from agentplane_primitives.fields.metadata import Metadata, TraceMetadata, is_reserved_key
 
 
 def test_enum_values_match_the_design() -> None:
