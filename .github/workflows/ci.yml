@@ -67,8 +67,14 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: pyproject.toml
-      - run: uv sync --python ${{ matrix.python-version }}
-      - run: uv run --python ${{ matrix.python-version }} pytest --cov
+      - name: Install
+        env:
+          PYTHON_VERSION: ${{ matrix.python-version }}
+        run: uv sync --python "$PYTHON_VERSION"
+      - name: Test
+        env:
+          PYTHON_VERSION: ${{ matrix.python-version }}
+        run: uv run --python "$PYTHON_VERSION" pytest --cov
 
   build:
     name: Build and check the distribution

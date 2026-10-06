@@ -30,12 +30,31 @@ uv build && uv run twine check dist/*
   HTTP, pricing and replay logic belong in the consumers.
 - **Dependencies:** pydantic only. A new runtime dependency needs a strong reason and a
   discussion first.
-- **Every model change needs:** tests, the regenerated `schemas/`, a corpus case in
-  `corpus/valid/` (and `corpus/invalid/` where relevant), and a CHANGELOG entry classified as
-  compatible or breaking.
+- **Every model change needs:** tests, the regenerated schemas (`src/agentplane_primitives/schemas/`), and a CHANGELOG
+  entry classified as compatible or breaking.
 - **Compatibility:** follow [docs/versioning.md](docs/versioning.md). Additive changes only
   within a major version. A new enum member is a schema change.
 - **Public API is typed.** `mypy --strict` must pass.
+
+## Change size
+
+Small changes are easier to review, easier to revert and safer for the three repositories that
+depend on this package.
+
+- **Estimate before you start.** Count lines added plus lines removed. Do not count generated
+  files (such as the schemas), lockfiles, or pure file moves and renames.
+- **If the estimate is above 400 lines, consider splitting it.** Write a short plan: a list of
+  logical components, each one reviewable on its own, passing CI, and ordered so that each builds
+  on the one before. Put the plan in the issue or the pull request description, then open one pull
+  request per component.
+- **Split by logical component, not by size.** For example: the models, then schema generation,
+  then the drift check. Not "the first half of the file".
+- **Keeping it as one change is allowed** when it cannot be split sensibly, such as initial
+  boilerplate, a mechanical change, or generated code. Say why in the pull request description.
+
+This is a prompt to plan, not a hard limit. A workflow (`.github/workflows/pr-size.yml`) enforces
+nothing: when a pull request is over 400 lines it adds the `size/large` label and one comment, and
+removes them again if the pull request shrinks. It never fails and is not a required check.
 
 ## Proposing a schema change
 
