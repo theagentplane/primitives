@@ -2,9 +2,12 @@
 
 Add a model here in the same pull request that introduces it, then run
 ``python scripts/generate_schemas.py`` and commit the new file. Helper models that only appear
-inside another model do not need an entry: they are included in that model's schema.
+inside another model (such as ``Link`` inside ``Envelope``) do not need an entry: they are
+included in that model's schema.
 """
 
 from pydantic import BaseModel
 
-PUBLIC_MODELS: tuple[type[BaseModel], ...] = ()
+from agentplane_primitives.models.envelope import Envelope
+
+PUBLIC_MODELS: tuple[type[BaseModel], ...] = (Envelope,)
