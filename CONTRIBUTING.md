@@ -31,7 +31,9 @@ uv build && uv run twine check dist/*
 - **Dependencies:** pydantic only. A new runtime dependency needs a strong reason and a
   discussion first.
 - **Every model change needs:** tests, the regenerated schemas (`src/agentplane_primitives/schemas/`), and a CHANGELOG
-  entry classified as compatible or breaking.
+  entry classified as compatible or breaking. Regenerate with `python scripts/generate_schemas.py`;
+  a new public model is also added to `PUBLIC_MODELS` in `models/registry.py`. `pytest` fails when
+  the committed schemas are out of date.
 - **Compatibility:** follow [docs/versioning.md](docs/versioning.md). Additive changes only
   within a major version. A new enum member is a schema change.
 - **Public API is typed.** `mypy --strict` must pass.

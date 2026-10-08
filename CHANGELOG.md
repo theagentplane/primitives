@@ -13,6 +13,10 @@ names the migration each consumer needs (see [docs/versioning.md](docs/versionin
   types and generators for `trace_id`, `span_id` and `envelope_id`; the shared `PrimitiveModel`
   base (unknown fields ignored on read); and the metadata key and label conventions.
   **Compatible** (new API, nothing existed before). Consumers: nothing to migrate yet.
+- Schema generation: `schema_files()` turns the public models into stable JSON Schema text,
+  `scripts/generate_schemas.py` writes one file per model into `schemas/`, and a test fails when
+  the committed files differ from the models. No model is public yet, so no schema file is
+  committed. **Compatible** (new API and tooling only). Consumers: nothing to migrate.
 
 ### Changed
 - Scope: HTTP request and response wrappers are not part of this package; the control plane owns

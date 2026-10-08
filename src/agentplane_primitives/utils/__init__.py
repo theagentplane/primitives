@@ -2,5 +2,6 @@
 
 from agentplane_primitives.utils.id_utils import new_envelope_id, new_span_id, new_trace_id
 from agentplane_primitives.utils.metadata_utils import is_reserved_key
+from agentplane_primitives.utils.schema_utils import schema_files
 
-__all__ = ["is_reserved_key", "new_envelope_id", "new_span_id", "new_trace_id"]
+__all__ = ["is_reserved_key", "new_envelope_id", "new_span_id", "new_trace_id", "schema_files"]
