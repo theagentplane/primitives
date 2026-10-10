@@ -72,7 +72,9 @@ class Envelope(PrimitiveModel):
         try:
             input_model, output_model = _PAYLOADS[Kind(data.get("kind"))]
         except ValueError:
-            return data  # an unknown kind is reported by the kind field itself
+            # Not swallowed: the ``kind`` field is validated next and rejects the value with its
+            # own error. This package does no I/O, so there is nothing to log.
+            return data
         data = dict(data)
         if isinstance(data.get("input"), dict):
             data["input"] = input_model.model_validate(data["input"])

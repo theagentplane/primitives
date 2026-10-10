@@ -1,8 +1,7 @@
 """Closed sets of values shared by the entities (design section 2.9).
 
 Each enum has its own module. A new member of any enum is a schema change: see
-``docs/versioning.md``. The content block types (``text``, ``tool_call``, ``reasoning``,
-``refusal``) are not an enum here: they are the ``type`` literals of the block models.
+``docs/versioning.md``.
 """
 
 from agentplane_primitives.enums.base_enum import BaseEnum
