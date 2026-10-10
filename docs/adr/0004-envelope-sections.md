@@ -1,8 +1,8 @@
-# 0004. Structure the envelope as identity, status, input, output and metadata sections
+# 0004. Keep identity fields at the top level of the envelope and nest status, input, output and metadata
 
 | Field | Value |
 |---|---|
-| Status | Proposed |
+| Status | Accepted |
 | Date | 2026-10-08 |
 | Deciders | Susheem Koul, Tisha Chawla |
 
@@ -29,8 +29,8 @@ record, while its section list names `identity` as a section.
 
 ### Option B: sections, with a placement rule
 
-Identity, `envelope_status`, `input`, `output` and `metadata`. Input holds what the caller
-passed, output holds what is known only from the response (including `usage` and `error`),
+The identity fields at the top level, then nested `envelope_status`, `input`, `output` and
+`metadata`. Input holds what the caller passed, output holds what is known only from the response (including `usage` and `error`),
 metadata holds constant setup in code.
 
 - Good: extension stays inside sections; the model and provider duplication goes away; `usage`

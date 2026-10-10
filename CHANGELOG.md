@@ -19,8 +19,16 @@ names the migration each consumer needs (see [docs/versioning.md](docs/versionin
 - Envelope and the `tool` kind: `Envelope` with its sections (identity fields at the top level,
   then `envelope_status`, `input`, `output`, `metadata`), `attempt` and `links` (`retry_of`),
   `ToolInput`, `ToolOutput`, `OutputError`, `schema_version` (`"0.1"`). `kind` selects the input
-  and output models; `llm` is rejected until its models land. First committed schema:
+  and output models; `llm` is rejected until its models land (added next). First committed schema:
   `Envelope.json`. **Compatible** (new models). Consumers: nothing to migrate yet.
+- The `llm` kind: `LlmInput` (model, messages, system, tools, tool_choice, response_format,
+  params, raw) and `LlmOutput` (content blocks, `finish_reason`, `provider`, `model`,
+  `model_source`, `usage`, `response_id`, `deployment_id`, raw, error); `FinishReason`,
+  `ModelSource` and `MessageRole` enums; `Usage` with the five exclusive token buckets; the
+  `text`, `tool_call`, `reasoning` and `refusal` content blocks. `Envelope` now reads input and
+  output by `kind`; the `Envelope.json` schema is regenerated (`input` and `output` accept either
+  shape). **Compatible** (an `llm` envelope was rejected before; nothing valid changes).
+  Consumers: nothing to migrate.
 
 ### Changed
 - Scope: HTTP request and response wrappers are not part of this package; the control plane owns
