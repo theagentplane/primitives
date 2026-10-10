@@ -1,0 +1,268 @@
+{
+  "$defs": {
+    "EnvelopeStatus": {
+      "description": "State, result and timing of an envelope. Times must carry a time zone.",
+      "properties": {
+        "ended_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ended At"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/State"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Status"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "state",
+        "started_at"
+      ],
+      "title": "EnvelopeStatus",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "Kind": {
+      "description": "The kind of boundary crossing an envelope records. It selects the input and output shape.",
+      "enum": [
+        "llm",
+        "tool"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "Link": {
+      "description": "A relationship to another envelope in the same trace.",
+      "properties": {
+        "envelope_id": {
+          "description": "Envelope id: 16 lowercase hex characters, not all zeros.",
+          "pattern": "^[0-9a-f]{16}$",
+          "title": "Envelope Id",
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/LinkType"
+        }
+      },
+      "required": [
+        "type",
+        "envelope_id"
+      ],
+      "title": "Link",
+      "type": "object"
+    },
+    "LinkType": {
+      "description": "The relationship a link expresses.",
+      "enum": [
+        "retry_of"
+      ],
+      "title": "LinkType",
+      "type": "string"
+    },
+    "OutputError": {
+      "description": "An error raised by the call, recorded in ``output.error``.",
+      "properties": {
+        "message": {
+          "description": "The exception message.",
+          "title": "Message",
+          "type": "string"
+        },
+        "type": {
+          "description": "Exception class name, e.g. RateLimitError.",
+          "minLength": 1,
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "message"
+      ],
+      "title": "OutputError",
+      "type": "object"
+    },
+    "State": {
+      "description": "Lifecycle state shared by Trace, Span and Envelope.",
+      "enum": [
+        "open",
+        "closed"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "Status": {
+      "description": "High-level result of a Span or Envelope.",
+      "enum": [
+        "success",
+        "failure"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "ToolInput": {
+      "description": "The arguments the tool was called with, in JSON form.",
+      "properties": {
+        "raw": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "description": "Bound arguments by name, as JSON.",
+          "title": "Raw",
+          "type": "object"
+        }
+      },
+      "required": [
+        "raw"
+      ],
+      "title": "ToolInput",
+      "type": "object"
+    },
+    "ToolOutput": {
+      "description": "What the tool returned, or the error it raised.",
+      "properties": {
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OutputError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "raw": {
+          "$ref": "#/$defs/JsonValue",
+          "default": null,
+          "description": "The return value, as JSON."
+        }
+      },
+      "title": "ToolOutput",
+      "type": "object"
+    }
+  },
+  "description": "The record of one call across a boundary inside a span.",
+  "properties": {
+    "attempt": {
+      "default": 1,
+      "description": "1 for the first try, 2 for a retry, ...",
+      "minimum": 1,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "envelope_id": {
+      "description": "Envelope id: 16 lowercase hex characters, not all zeros.",
+      "pattern": "^[0-9a-f]{16}$",
+      "title": "Envelope Id",
+      "type": "string"
+    },
+    "envelope_status": {
+      "$ref": "#/$defs/EnvelopeStatus"
+    },
+    "input": {
+      "$ref": "#/$defs/ToolInput"
+    },
+    "kind": {
+      "$ref": "#/$defs/Kind"
+    },
+    "links": {
+      "items": {
+        "$ref": "#/$defs/Link"
+      },
+      "title": "Links",
+      "type": "array"
+    },
+    "metadata": {
+      "patternProperties": {
+        "^[a-z0-9_]+(\\.[a-z0-9_]+)*$": {
+          "$ref": "#/$defs/JsonValue"
+        }
+      },
+      "title": "Metadata",
+      "type": "object"
+    },
+    "name": {
+      "description": "Boundary name, e.g. agent.chat.",
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "output": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ToolOutput"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "parent_envelope_id": {
+      "anyOf": [
+        {
+          "description": "Envelope id: 16 lowercase hex characters, not all zeros.",
+          "pattern": "^[0-9a-f]{16}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Envelope Id"
+    },
+    "schema_version": {
+      "default": "0.1",
+      "description": "Schema version, major.minor.",
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "span_id": {
+      "description": "Span id: 16 lowercase hex characters, not all zeros.",
+      "pattern": "^[0-9a-f]{16}$",
+      "title": "Span Id",
+      "type": "string"
+    },
+    "trace_id": {
+      "description": "Trace id: 32 lowercase hex characters, not all zeros.",
+      "pattern": "^[0-9a-f]{32}$",
+      "title": "Trace Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "envelope_id",
+    "span_id",
+    "trace_id",
+    "name",
+    "kind",
+    "envelope_status",
+    "input"
+  ],
+  "title": "Envelope",
+  "type": "object"
+}

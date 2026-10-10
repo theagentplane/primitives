@@ -20,11 +20,20 @@ what type each one is. Think of it as a form template.
 ## What to do when you change a model
 
 1. Change the code.
-2. Regenerate the files (the command will be listed here when the generator lands, and in
-   `CONTRIBUTING.md`).
-3. Commit the code change and the regenerated files together.
+2. If you added a model, add it to `PUBLIC_MODELS` in `src/agentplane_primitives/models/registry.py`.
+3. Regenerate the files, from the repository root:
+
+   ```bash
+   python scripts/generate_schemas.py
+   ```
+
+   It writes one `<ModelName>.json` per public model and removes files for models that no
+   longer exist.
+4. Commit the code change and the regenerated files together.
 
 If CI says the schemas are out of date, you changed a rule but did not regenerate. Run step 2
 and commit again.
 
-This folder is empty until the first models land (see the roadmap in the top-level README).
+The check is `tests/test_schemas.py`, which runs with the rest of the tests
+(`pytest`). This folder stays empty until the first Trace, Span or Envelope model is added to
+`PUBLIC_MODELS`.
