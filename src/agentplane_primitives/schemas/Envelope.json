@@ -43,6 +43,18 @@
       "title": "EnvelopeStatus",
       "type": "object"
     },
+    "FinishReason": {
+      "description": "The canonical reason an LLM response ended.",
+      "enum": [
+        "stop",
+        "length",
+        "tool_calls",
+        "content_filter",
+        "other"
+      ],
+      "title": "FinishReason",
+      "type": "string"
+    },
     "JsonValue": {},
     "Kind": {
       "description": "The kind of boundary crossing an envelope records. It selects the input and output shape.",
@@ -81,6 +93,377 @@
       "title": "LinkType",
       "type": "string"
     },
+    "LlmInput": {
+      "description": "What was sent to the model.",
+      "properties": {
+        "messages": {
+          "items": {
+            "$ref": "#/$defs/Message"
+          },
+          "title": "Messages",
+          "type": "array"
+        },
+        "model": {
+          "description": "The model or alias the caller asked for.",
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "params": {
+          "$ref": "#/$defs/LlmParams"
+        },
+        "raw": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "description": "Arguments as passed, by name, as JSON.",
+          "title": "Raw",
+          "type": "object"
+        },
+        "response_format": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/JsonValue"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Response Format"
+        },
+        "system": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Instructions the caller supplied.",
+          "title": "System"
+        },
+        "tool_choice": {
+          "$ref": "#/$defs/JsonValue",
+          "default": null,
+          "description": "Whether, or which, tool the model must use."
+        },
+        "tools": {
+          "anyOf": [
+            {
+              "items": {
+                "additionalProperties": {
+                  "$ref": "#/$defs/JsonValue"
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Tool definitions offered to the model.",
+          "title": "Tools"
+        }
+      },
+      "required": [
+        "model",
+        "messages",
+        "raw"
+      ],
+      "title": "LlmInput",
+      "type": "object"
+    },
+    "LlmOutput": {
+      "description": "What came back from the model, or the error it raised.",
+      "properties": {
+        "content": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "reasoning": "#/$defs/ReasoningBlock",
+                "refusal": "#/$defs/RefusalBlock",
+                "text": "#/$defs/TextBlock",
+                "tool_call": "#/$defs/ToolCallBlock"
+              },
+              "propertyName": "type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextBlock"
+              },
+              {
+                "$ref": "#/$defs/ToolCallBlock"
+              },
+              {
+                "$ref": "#/$defs/ReasoningBlock"
+              },
+              {
+                "$ref": "#/$defs/RefusalBlock"
+              }
+            ]
+          },
+          "title": "Content",
+          "type": "array"
+        },
+        "deployment_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Deployment Id"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OutputError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "finish_reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FinishReason"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The model that served the call.",
+          "title": "Model"
+        },
+        "model_source": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ModelSource"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "provider": {
+          "default": "unknown",
+          "description": "Who served the call, e.g. openai, or unknown.",
+          "minLength": 1,
+          "title": "Provider",
+          "type": "string"
+        },
+        "raw": {
+          "$ref": "#/$defs/JsonValue",
+          "default": null,
+          "description": "The returned value, as JSON."
+        },
+        "response_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Response Id"
+        },
+        "usage": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Usage"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "LlmOutput",
+      "type": "object"
+    },
+    "LlmParams": {
+      "description": "Sampling parameters passed on this call.",
+      "properties": {
+        "max_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Tokens"
+        },
+        "seed": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Seed"
+        },
+        "stop": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stop"
+        },
+        "temperature": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temperature"
+        },
+        "top_p": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Top P"
+        }
+      },
+      "title": "LlmParams",
+      "type": "object"
+    },
+    "Message": {
+      "description": "A single message with a role.",
+      "properties": {
+        "content": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "discriminator": {
+                  "mapping": {
+                    "reasoning": "#/$defs/ReasoningBlock",
+                    "refusal": "#/$defs/RefusalBlock",
+                    "text": "#/$defs/TextBlock",
+                    "tool_call": "#/$defs/ToolCallBlock"
+                  },
+                  "propertyName": "type"
+                },
+                "oneOf": [
+                  {
+                    "$ref": "#/$defs/TextBlock"
+                  },
+                  {
+                    "$ref": "#/$defs/ToolCallBlock"
+                  },
+                  {
+                    "$ref": "#/$defs/ReasoningBlock"
+                  },
+                  {
+                    "$ref": "#/$defs/RefusalBlock"
+                  }
+                ]
+              },
+              "type": "array"
+            }
+          ],
+          "title": "Content"
+        },
+        "role": {
+          "$ref": "#/$defs/MessageRole"
+        },
+        "tool_call_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "For role=tool: the id of the tool call this answers.",
+          "title": "Tool Call Id"
+        }
+      },
+      "required": [
+        "role",
+        "content"
+      ],
+      "title": "Message",
+      "type": "object"
+    },
+    "MessageRole": {
+      "description": "The author of a message.",
+      "enum": [
+        "system",
+        "user",
+        "assistant",
+        "tool"
+      ],
+      "title": "MessageRole",
+      "type": "string"
+    },
+    "ModelSource": {
+      "description": "How the model name in the output was obtained.",
+      "enum": [
+        "served",
+        "requested"
+      ],
+      "title": "ModelSource",
+      "type": "string"
+    },
     "OutputError": {
       "description": "An error raised by the call, recorded in ``output.error``.",
       "properties": {
@@ -103,6 +486,46 @@
       "title": "OutputError",
       "type": "object"
     },
+    "ReasoningBlock": {
+      "description": "Reasoning content returned by the model.",
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "type": {
+          "const": "reasoning",
+          "default": "reasoning",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "ReasoningBlock",
+      "type": "object"
+    },
+    "RefusalBlock": {
+      "description": "A refusal returned by the model.",
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "type": {
+          "const": "refusal",
+          "default": "refusal",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "RefusalBlock",
+      "type": "object"
+    },
     "State": {
       "description": "Lifecycle state shared by Trace, Span and Envelope.",
       "enum": [
@@ -120,6 +543,67 @@
       ],
       "title": "Status",
       "type": "string"
+    },
+    "TextBlock": {
+      "description": "A piece of text.",
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "type": {
+          "const": "text",
+          "default": "text",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "TextBlock",
+      "type": "object"
+    },
+    "ToolCallBlock": {
+      "description": "A request from the model to call a tool, with parsed arguments.",
+      "properties": {
+        "arguments": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Arguments",
+          "type": "object"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The provider's id for this call, if any.",
+          "title": "Id"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "type": {
+          "const": "tool_call",
+          "default": "tool_call",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "ToolCallBlock",
+      "type": "object"
     },
     "ToolInput": {
       "description": "The arguments the tool was called with, in JSON form.",
@@ -161,6 +645,48 @@
       },
       "title": "ToolOutput",
       "type": "object"
+    },
+    "Usage": {
+      "description": "Token counts. A bucket the provider did not report is 0.",
+      "properties": {
+        "cache_write": {
+          "default": 0,
+          "description": "Tokens written to the cache.",
+          "minimum": 0,
+          "title": "Cache Write",
+          "type": "integer"
+        },
+        "cached_read": {
+          "default": 0,
+          "description": "Input tokens read from the cache.",
+          "minimum": 0,
+          "title": "Cached Read",
+          "type": "integer"
+        },
+        "input": {
+          "default": 0,
+          "description": "Non-cached input tokens.",
+          "minimum": 0,
+          "title": "Input",
+          "type": "integer"
+        },
+        "output": {
+          "default": 0,
+          "description": "Non-reasoning output tokens.",
+          "minimum": 0,
+          "title": "Output",
+          "type": "integer"
+        },
+        "reasoning": {
+          "default": 0,
+          "description": "Reasoning output tokens.",
+          "minimum": 0,
+          "title": "Reasoning",
+          "type": "integer"
+        }
+      },
+      "title": "Usage",
+      "type": "object"
     }
   },
   "description": "The record of one call across a boundary inside a span.",
@@ -182,7 +708,16 @@
       "$ref": "#/$defs/EnvelopeStatus"
     },
     "input": {
-      "$ref": "#/$defs/ToolInput"
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ToolInput"
+        },
+        {
+          "$ref": "#/$defs/LlmInput"
+        }
+      ],
+      "description": "Shape chosen by kind: tool or llm input.",
+      "title": "Input"
     },
     "kind": {
       "$ref": "#/$defs/Kind"
@@ -215,10 +750,15 @@
           "$ref": "#/$defs/ToolOutput"
         },
         {
+          "$ref": "#/$defs/LlmOutput"
+        },
+        {
           "type": "null"
         }
       ],
-      "default": null
+      "default": null,
+      "description": "Shape chosen by kind: tool or llm output.",
+      "title": "Output"
     },
     "parent_envelope_id": {
       "anyOf": [

@@ -7,17 +7,22 @@ as in the design's example payloads; the other four sections are nested:
   ``kind``, ``attempt``, ``links``
 - ``envelope_status``, ``input``, ``output`` and ``metadata``
 
-``kind`` selects the shape of ``input`` and ``output``. Only ``tool`` has a shape so far; ``llm``
-is rejected until its models land. An envelope is open until closed; a closed envelope must have
-an ``output`` (an error is recorded there).
+``kind`` selects the shape of ``input`` and ``output``: ``tool`` uses ``ToolInput`` and
+``ToolOutput``, ``llm`` uses ``LlmInput`` and ``LlmOutput``. A payload of the other kind's shape
+is rejected. An envelope is open until closed; a closed envelope must have an ``output`` (an
+error is recorded there).
 """
 
-from pydantic import Field, model_validator
+from typing import Any
+
+from pydantic import BaseModel, Field, model_validator
 
 from agentplane_primitives.enums import Kind, State
 from agentplane_primitives.models.base import PrimitiveModel
 from agentplane_primitives.models.envelope_status import EnvelopeStatus
 from agentplane_primitives.models.link import Link
+from agentplane_primitives.models.llm_input import LlmInput
+from agentplane_primitives.models.llm_output import LlmOutput
 from agentplane_primitives.models.tool_input import ToolInput
 from agentplane_primitives.models.tool_output import ToolOutput
 from agentplane_primitives.types import (
@@ -28,6 +33,11 @@ from agentplane_primitives.types import (
     SpanId,
     TraceId,
 )
+
+_PAYLOADS: dict[Kind, tuple[type[BaseModel], type[BaseModel]]] = {
+    Kind.TOOL: (ToolInput, ToolOutput),
+    Kind.LLM: (LlmInput, LlmOutput),
+}
 
 
 class Envelope(PrimitiveModel):
@@ -46,14 +56,39 @@ class Envelope(PrimitiveModel):
     links: list[Link] = Field(default_factory=list)
 
     envelope_status: EnvelopeStatus
-    input: ToolInput
-    output: ToolOutput | None = None
+    input: ToolInput | LlmInput = Field(description="Shape chosen by kind: tool or llm input.")
+    output: ToolOutput | LlmOutput | None = Field(
+        default=None, description="Shape chosen by kind: tool or llm output."
+    )
     metadata: Metadata = Field(default_factory=dict)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _read_payloads_by_kind(cls, data: Any) -> Any:
+        # The two payload shapes overlap when unknown fields are ignored, so the kind, not the
+        # shape, decides which model reads input and output.
+        if not isinstance(data, dict):
+            return data
+        try:
+            input_model, output_model = _PAYLOADS[Kind(data.get("kind"))]
+        except ValueError:
+            # Not swallowed: the ``kind`` field is validated next and rejects the value with its
+            # own error. This package does no I/O, so there is nothing to log.
+            return data
+        data = dict(data)
+        if isinstance(data.get("input"), dict):
+            data["input"] = input_model.model_validate(data["input"])
+        if isinstance(data.get("output"), dict):
+            data["output"] = output_model.model_validate(data["output"])
+        return data
 
     @model_validator(mode="after")
     def _check_consistency(self) -> "Envelope":
-        if self.kind is not Kind.TOOL:
-            raise ValueError(f"kind {self.kind.value!r} has no input and output models yet")
+        input_model, output_model = _PAYLOADS[self.kind]
+        if not isinstance(self.input, input_model):
+            raise ValueError(f"input does not match kind {self.kind.value!r}")
+        if self.output is not None and not isinstance(self.output, output_model):
+            raise ValueError(f"output does not match kind {self.kind.value!r}")
         if self.envelope_status.state is State.CLOSED and self.output is None:
             raise ValueError("a closed envelope needs an output")
         return self
