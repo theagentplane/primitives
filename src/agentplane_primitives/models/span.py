@@ -23,7 +23,7 @@ from agentplane_primitives.types import (
     SpanId,
     TraceId,
 )
-from agentplane_primitives.utils.lifecycle_utils import check_lifecycle
+from agentplane_primitives.utils.lifecycle_utils import validate_state_status_and_times
 
 
 class Span(PrimitiveModel):
@@ -41,6 +41,8 @@ class Span(PrimitiveModel):
     metadata: Metadata = Field(default_factory=dict, description="Span-level setup.")
 
     @model_validator(mode="after")
-    def _check_lifecycle(self) -> "Span":
-        check_lifecycle(self.state, self.status, self.started_at, self.ended_at, "span")
+    def _validate_state_fields(self) -> "Span":
+        validate_state_status_and_times(
+            self.state, self.status, self.started_at, self.ended_at, "span"
+        )
         return self

@@ -9,7 +9,7 @@ from pydantic import AwareDatetime, model_validator
 
 from agentplane_primitives.enums import State, Status
 from agentplane_primitives.models.base import PrimitiveModel
-from agentplane_primitives.utils.lifecycle_utils import check_lifecycle
+from agentplane_primitives.utils.lifecycle_utils import validate_state_status_and_times
 
 
 class EnvelopeStatus(PrimitiveModel):
@@ -21,6 +21,8 @@ class EnvelopeStatus(PrimitiveModel):
     ended_at: AwareDatetime | None = None
 
     @model_validator(mode="after")
-    def _check_lifecycle(self) -> "EnvelopeStatus":
-        check_lifecycle(self.state, self.status, self.started_at, self.ended_at, "envelope")
+    def _validate_state_fields(self) -> "EnvelopeStatus":
+        validate_state_status_and_times(
+            self.state, self.status, self.started_at, self.ended_at, "envelope"
+        )
         return self

@@ -10,14 +10,17 @@ from datetime import datetime
 from agentplane_primitives.enums import State, Status
 
 
-def check_lifecycle(
+def validate_state_status_and_times(
     state: State,
     status: Status | None,
     started_at: datetime,
     ended_at: datetime | None,
     what: str,
 ) -> None:
-    """Raise ``ValueError`` if the fields do not describe a valid open or closed record.
+    """Raise ``ValueError`` unless ``status`` and ``ended_at`` agree with ``state``.
+
+    An ``open`` record must have neither; a ``closed`` one must have both, with ``ended_at`` not
+    before ``started_at``.
 
     ``what`` names the record in the error message, for example ``"envelope"`` or ``"span"``.
     """
