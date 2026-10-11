@@ -125,9 +125,10 @@ uv build                                  # sdist and wheel
 ## 🗺 Roadmap
 
 1. ✅ Repository scaffold
-2. `Trace`, `Span`, `Envelope`, the `llm` and `tool` payload variants, enums, ids
-3. The `traceparent` carrier
-4. Committed JSON Schema and the CI drift check
+2. ✅ `Trace`, `Span`, `Envelope`, the `llm` and `tool` payload variants, enums, ids
+3. ✅ The `traceparent` carrier
+4. ✅ Committed JSON Schema and the CI drift check
+5. First release (0.1.0): see [RELEASING.md](RELEASING.md)
 
 ## Reference
 
