@@ -34,6 +34,10 @@ names the migration each consumer needs (see [docs/versioning.md](docs/versionin
   `state`, `status`, times, metadata). The open and closed rule is shared with the envelope
   status. First schemas `Trace.json` and `Span.json`. **Compatible** (new models). Consumers:
   nothing to migrate.
+- The `traceparent` carrier: `TraceContext` (trace id, the caller's envelope id as `parent-id`,
+  flags), `parse_traceparent()` (strict, never raises: anything malformed gives `None`) and
+  `format_traceparent()`. `to_event` and `from_event` are reserved names, documented and not
+  implemented. **Compatible** (new API). Consumers: nothing to migrate.
 
 ### Changed
 - Scope: HTTP request and response wrappers are not part of this package; the control plane owns
