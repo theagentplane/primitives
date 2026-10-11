@@ -9,6 +9,7 @@ from pydantic import AwareDatetime, model_validator
 
 from agentplane_primitives.enums import State, Status
 from agentplane_primitives.models.base import PrimitiveModel
+from agentplane_primitives.utils.lifecycle_utils import check_lifecycle
 
 
 class EnvelopeStatus(PrimitiveModel):
@@ -21,11 +22,5 @@ class EnvelopeStatus(PrimitiveModel):
 
     @model_validator(mode="after")
     def _check_lifecycle(self) -> "EnvelopeStatus":
-        if self.state is State.OPEN:
-            if self.status is not None or self.ended_at is not None:
-                raise ValueError("an open envelope has no status and no ended_at yet")
-        elif self.status is None or self.ended_at is None:
-            raise ValueError("a closed envelope needs a status and an ended_at")
-        elif self.ended_at < self.started_at:
-            raise ValueError("ended_at must not be before started_at")
+        check_lifecycle(self.state, self.status, self.started_at, self.ended_at, "envelope")
         return self

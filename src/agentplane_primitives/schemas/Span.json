@@ -1,0 +1,116 @@
+{
+  "$defs": {
+    "JsonValue": {},
+    "State": {
+      "description": "Lifecycle state shared by Trace, Span and Envelope.",
+      "enum": [
+        "open",
+        "closed"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "Status": {
+      "description": "High-level result of a Span or Envelope.",
+      "enum": [
+        "success",
+        "failure"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "description": "One service's handling of a request inside a trace. Times must carry a time zone.",
+  "properties": {
+    "ended_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ended At"
+    },
+    "metadata": {
+      "description": "Span-level setup.",
+      "patternProperties": {
+        "^[a-z0-9_]+(\\.[a-z0-9_]+)*$": {
+          "$ref": "#/$defs/JsonValue"
+        }
+      },
+      "title": "Metadata",
+      "type": "object"
+    },
+    "parent_envelope_id": {
+      "anyOf": [
+        {
+          "description": "Envelope id: 16 lowercase hex characters, not all zeros.",
+          "pattern": "^[0-9a-f]{16}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parent Envelope Id"
+    },
+    "schema_version": {
+      "default": "0.1",
+      "description": "Schema version, major.minor.",
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "service": {
+      "description": "Service or agent name.",
+      "minLength": 1,
+      "title": "Service",
+      "type": "string"
+    },
+    "span_id": {
+      "description": "Span id: 16 lowercase hex characters, not all zeros.",
+      "pattern": "^[0-9a-f]{16}$",
+      "title": "Span Id",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/State"
+    },
+    "status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Status"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "trace_id": {
+      "description": "Trace id: 32 lowercase hex characters, not all zeros.",
+      "pattern": "^[0-9a-f]{32}$",
+      "title": "Trace Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "span_id",
+    "trace_id",
+    "service",
+    "state",
+    "started_at"
+  ],
+  "title": "Span",
+  "type": "object"
+}
