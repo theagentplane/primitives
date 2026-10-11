@@ -1,4 +1,4 @@
-"""The models: the shared base class and the Envelope with its parts. Trace and Span follow."""
+"""The models: Trace, Span and Envelope with its parts, and the shared base class."""
 
 from agentplane_primitives.models.base import PrimitiveModel
 from agentplane_primitives.models.content_block import ContentBlock
@@ -12,10 +12,12 @@ from agentplane_primitives.models.message import Message
 from agentplane_primitives.models.output_error import ABORT_CALL, OutputError
 from agentplane_primitives.models.reasoning_block import ReasoningBlock
 from agentplane_primitives.models.refusal_block import RefusalBlock
+from agentplane_primitives.models.span import Span
 from agentplane_primitives.models.text_block import TextBlock
 from agentplane_primitives.models.tool_call_block import ToolCallBlock
 from agentplane_primitives.models.tool_input import ToolInput
 from agentplane_primitives.models.tool_output import ToolOutput
+from agentplane_primitives.models.trace import Trace
 from agentplane_primitives.models.usage import Usage
 
 __all__ = [
@@ -32,9 +34,11 @@ __all__ = [
     "PrimitiveModel",
     "ReasoningBlock",
     "RefusalBlock",
+    "Span",
     "TextBlock",
     "ToolCallBlock",
     "ToolInput",
     "ToolOutput",
+    "Trace",
     "Usage",
 ]

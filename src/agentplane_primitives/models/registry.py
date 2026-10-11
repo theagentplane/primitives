@@ -9,5 +9,7 @@ included in that model's schema.
 from pydantic import BaseModel
 
 from agentplane_primitives.models.envelope import Envelope
+from agentplane_primitives.models.span import Span
+from agentplane_primitives.models.trace import Trace
 
-PUBLIC_MODELS: tuple[type[BaseModel], ...] = (Envelope,)
+PUBLIC_MODELS: tuple[type[BaseModel], ...] = (Trace, Span, Envelope)

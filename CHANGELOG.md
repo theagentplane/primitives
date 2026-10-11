@@ -29,6 +29,11 @@ names the migration each consumer needs (see [docs/versioning.md](docs/versionin
   output by `kind`; the `Envelope.json` schema is regenerated (`input` and `output` accept either
   shape). **Compatible** (an `llm` envelope was rejected before; nothing valid changes).
   Consumers: nothing to migrate.
+- `Trace` and `Span`: `Trace` (id, optional name, string-valued labels, `state`, derived
+  times) with no status of its own; `Span` (id, `trace_id`, `parent_envelope_id`, `service`,
+  `state`, `status`, times, metadata). The open and closed rule is shared with the envelope
+  status. First schemas `Trace.json` and `Span.json`. **Compatible** (new models). Consumers:
+  nothing to migrate.
 
 ### Changed
 - Scope: HTTP request and response wrappers are not part of this package; the control plane owns
