@@ -6,6 +6,12 @@ names the migration each consumer needs (see [docs/versioning.md](docs/versionin
 
 ## [Unreleased]
 
+### Changed
+- Package metadata: the development status classifier is now `Alpha` (was `Pre-Alpha`), and the
+  README install line no longer says the release is pending. Documentation: ADR 0005 accepted,
+  ADR 0006 (versioning policy) added as Proposed. **Compatible** (metadata and documentation
+  only). Consumers: nothing to migrate.
+
 ## [0.1.0] - 2026-10-12
 
 First release. Schema version `0.1`. Everything below is new, so every entry is **compatible**; there
