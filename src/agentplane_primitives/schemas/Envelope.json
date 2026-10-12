@@ -133,6 +133,7 @@
             }
           ],
           "default": null,
+          "description": "Requested answer format, as the provider expects it. Not checked.",
           "title": "Response Format"
         },
         "system": {
@@ -151,7 +152,7 @@
         "tool_choice": {
           "$ref": "#/$defs/JsonValue",
           "default": null,
-          "description": "Whether, or which, tool the model must use."
+          "description": "Whether, or which, tool the model must use. Not enforced."
         },
         "tools": {
           "anyOf": [
@@ -169,7 +170,7 @@
             }
           ],
           "default": null,
-          "description": "Tool definitions offered to the model.",
+          "description": "Tool definitions offered to the model. Not enforced; see the docstring.",
           "title": "Tools"
         }
       },

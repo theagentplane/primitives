@@ -7,6 +7,12 @@ names the migration each consumer needs (see [docs/versioning.md](docs/versionin
 ## [Unreleased]
 
 ### Changed
+- `LlmInput`: documented the convention for `tools`, `tool_choice` and `response_format`
+  (they stay loose JSON, not enforced; adapters follow the convention) and the field
+  descriptions say so, so `Envelope.json` descriptions change. **Compatible** (documentation and
+  schema descriptions only). Consumers: nothing to migrate.
+
+### Changed
 - Package metadata: the development status classifier is now `Alpha` (was `Pre-Alpha`), and the
   README install line no longer says the release is pending. Documentation: ADR 0005 accepted,
   ADR 0006 (versioning policy) added as Proposed. **Compatible** (metadata and documentation
