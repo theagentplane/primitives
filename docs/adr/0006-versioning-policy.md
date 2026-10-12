@@ -15,12 +15,34 @@ written out in [docs/versioning.md](../versioning.md); this ADR records it as a 
 
 ## Options considered
 
-The design records the rules, not the alternatives that were weighed. The deciders should add
-those here before accepting this ADR; none is invented in this draft.
+> **Drafted by Claude at the maintainers' request.** The design records the rules, not the
+> alternatives that were weighed, so the options below are candidates written for this ADR, not a
+> record of what was discussed. The deciders must confirm, correct or replace them before
+> accepting.
+
+### Option A: one version only, the package SemVer
+
+- Good: nothing extra to carry on payloads.
+- Bad: a stored payload does not say which schema wrote it, which matters because the control
+  plane reads two majors and upconverts on read.
+
+### Option B: allow breaking changes in minor releases before 1.0
+
+The usual allowance for 0.x versions.
+
+- Good: easier to change shape while the models are young.
+- Bad: each of the three consumers can break on a minor upgrade, which is why the rules here ask
+  them to pin the exact minor before 1.0 and treat changes as additive.
+
+### Option C: two versions, additive within a major (the policy as written)
+
+- Good: a payload names its schema version; consumers know what an upgrade may change.
+- Bad: new enum members force consumers to upgrade before emitters; the control plane carries
+  upconversion for the previous major.
 
 ## Decision
 
-We will use two versions and an additive-only rule:
+We will take Option C: two versions and an additive-only rule:
 
 - **Package version** follows SemVer. **`schema_version`** (`major.minor`) is carried on every
   persisted payload, and the package major equals the schema major.
