@@ -47,10 +47,10 @@ This package is that agreement, and nothing else.
 Requires Python 3.10+. The package is typed ([PEP 561](https://peps.python.org/pep-0561/)).
 
 ```bash
-pip install agentplane-primitives   # once the first release is published
+pip install agentplane-primitives
 ```
 
-Until then, install from source:
+Or install from source:
 
 ```bash
 git clone https://github.com/theagentplane/primitives.git
