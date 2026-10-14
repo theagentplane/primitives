@@ -8,13 +8,24 @@ here.
 ``metadata`` holds the trace-level labels, written once and not copied onto every envelope. The
 labels are strings, because they are indexed and filtered on. Well-known keys: ``session_id``,
 ``message_id`` and ``user_id``. "Written once" is enforced by the control plane, not by this model.
+
+``attributes`` is the general-purpose counterpart: any JSON value, **mutable**, and written by the
+control plane or a consumer such as TokenOps, never by Chronicle. It carries trace-level state that
+is not a label, for example a halt flag. Keys follow the metadata conventions; consumers namespace
+their keys (``tokenops.halted``). The control plane replaces the whole dict or merges keys.
 """
 
 from pydantic import AwareDatetime, Field
 
 from agentplane_primitives.enums import State
 from agentplane_primitives.models.base import PrimitiveModel
-from agentplane_primitives.types import SCHEMA_VERSION, SchemaVersion, TraceId, TraceMetadata
+from agentplane_primitives.types import (
+    SCHEMA_VERSION,
+    Metadata,
+    SchemaVersion,
+    TraceId,
+    TraceMetadata,
+)
 
 
 class Trace(PrimitiveModel):
@@ -24,6 +35,10 @@ class Trace(PrimitiveModel):
     trace_id: TraceId
     name: str | None = Field(default=None, min_length=1, description="Optional human label.")
     metadata: TraceMetadata = Field(default_factory=dict, description="Trace labels.")
+    attributes: Metadata = Field(
+        default_factory=dict,
+        description="Mutable trace-level state written by the control plane or a consumer.",
+    )
     state: State
     started_at: AwareDatetime | None = None
     ended_at: AwareDatetime | None = None

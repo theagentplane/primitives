@@ -6,6 +6,13 @@ names the migration each consumer needs (see [docs/versioning.md](docs/versionin
 
 ## [Unreleased]
 
+### Added
+- `Trace.attributes`: a general-purpose, mutable dict of JSON values for trace-level state written
+  by the control plane or a consumer (for example a halt flag), distinct from the write-once
+  string `metadata` labels. Optional, defaults to `{}`. **Compatible** (new optional field; readers
+  on 0.1 ignore it). Consumers: nothing to migrate; control plane and TokenOps may start using it
+  once on this release.
+
 ### Changed
 - `LlmInput`: documented the convention for `tools`, `tool_choice` and `response_format`
   (they stay loose JSON, not enforced; adapters follow the convention) and the field

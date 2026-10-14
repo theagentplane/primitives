@@ -1,5 +1,6 @@
 {
   "$defs": {
+    "JsonValue": {},
     "State": {
       "description": "Lifecycle state shared by Trace, Span and Envelope.",
       "enum": [
@@ -12,6 +13,16 @@
   },
   "description": "One request, from the first service that handled it to the last.",
   "properties": {
+    "attributes": {
+      "description": "Mutable trace-level state written by the control plane or a consumer.",
+      "patternProperties": {
+        "^[a-z0-9_]+(\\.[a-z0-9_]+)*$": {
+          "$ref": "#/$defs/JsonValue"
+        }
+      },
+      "title": "Attributes",
+      "type": "object"
+    },
     "ended_at": {
       "anyOf": [
         {

@@ -46,6 +46,7 @@ Do not write one for routine changes: a bug fix, a rename, a small refactor.
 | [0004](0004-envelope-sections.md) | Keep identity fields at the top level of the envelope and nest status, input, output and metadata | Accepted |
 | [0005](0005-three-tiers-trace-span-envelope.md) | Model a request as three tiers: Trace, Span and Envelope | Accepted |
 | [0006](0006-versioning-policy.md) | Version the package and the schema separately, additive within a major | Proposed |
+| [0007](0007-trace-attributes.md) | Trace carries a mutable `attributes` dict beside the write-once labels | Proposed |
 
 Related repositories: [chronicle](https://github.com/theagentplane/chronicle), [primitives](https://github.com/theagentplane/primitives),
 [control-plane](https://github.com/theagentplane/control-plane), [tokenops](https://github.com/theagentplane/tokenops).
