@@ -95,3 +95,21 @@ def test_a_span_closes_with_a_status() -> None:
 def test_invalid_spans_are_rejected(changes: dict[str, Any]) -> None:
     with pytest.raises(ValidationError):
         Span.model_validate({**FIRST_SPAN, **changes})
+
+
+def test_trace_attributes_hold_any_json_and_default_to_empty() -> None:
+    assert Trace.model_validate({"trace_id": TRACE_ID, "state": "open"}).attributes == {}
+    trace = Trace.model_validate(
+        {
+            "trace_id": TRACE_ID,
+            "state": "open",
+            "attributes": {"tokenops.halted": True, "tokenops.halt": {"reason": "budget"}},
+        }
+    )
+    assert trace.attributes["tokenops.halted"] is True
+    assert Trace.model_validate_json(trace.model_dump_json()) == trace
+
+
+def test_trace_attribute_keys_follow_the_metadata_rules() -> None:
+    with pytest.raises(ValidationError):
+        Trace.model_validate({"trace_id": TRACE_ID, "state": "open", "attributes": {"Bad Key": 1}})
