@@ -49,7 +49,7 @@ def make(**changes: Any) -> dict[str, Any]:
 def test_a_failed_call_and_its_retry_round_trip() -> None:
     first = Envelope.model_validate(FIRST)
     retry = Envelope.model_validate(RETRY)
-    assert first.schema_version == "0.1"
+    assert first.schema_version == "0.2"
     assert first.kind is Kind.TOOL
     assert first.envelope_status.status is Status.FAILURE
     assert first.output is not None

@@ -6,6 +6,11 @@ names the migration each consumer needs (see [docs/versioning.md](docs/versionin
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-15
+
+Schema version `0.2`. Pre-1.0: pin the exact minor (`agentplane-primitives==0.2.*`). Every entry
+is **compatible**; payloads written as `0.1` still validate.
+
 ### Added
 - `Trace.attributes`: a general-purpose, mutable dict of JSON values for trace-level state written
   by the control plane or a consumer (for example a halt flag), distinct from the write-once
