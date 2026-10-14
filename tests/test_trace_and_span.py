@@ -24,7 +24,7 @@ def test_a_trace_with_labels() -> None:
     )
     assert trace.state is State.OPEN
     assert trace.metadata["session_id"] == "s-1"
-    assert trace.schema_version == "0.1"
+    assert trace.schema_version == "0.2"
     assert trace.started_at is None  # derived by the control plane
     assert Trace.model_validate_json(trace.model_dump_json()) == trace
 
